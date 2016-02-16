@@ -26,43 +26,10 @@ void MyThread::run()
     exec();
 }
 
-//void MyThread::readyRead()
-//{
-//    // get the information
-//    QByteArray Data = socket->readAll();
-
-//    // will write on server side window
-//    qDebug() << socketDescriptor << " Data in: " << Data;
-
-//    socket->write(Data);
-//}
-
-//void MyThread::readyRead()
-//{
-//    emit answerFromClient(socket->readAll());
-//}
-
 void MyThread::readyRead()
 {
-    QByteArray Data = socket->readAll();
-    QVector<QChar> qVec;
-    QDataStream streamOUT(Data);
-    streamOUT >> qVec;
-
-    for(int i = 0; i<10; i++){
-        qDebug()<< "vector: " << qVec[i];
-    }
-
-    QFile fileOut("D:\\fileout.txt");
-    if(fileOut.open(QIODevice::WriteOnly | QIODevice::Text)){
-        qDebug()<< "save";
-        QTextStream writeStream(&fileOut);
-        writeStream << QString(qVec.data());
-        fileOut.close();
-    }else{
-        qDebug()<< "Don't save";
-    }
-    emit answerFromClient(Data);
+    QByteArray data = socket->readAll();
+    emit answerFromClient(data);
 
 }
 
@@ -74,8 +41,8 @@ void MyThread::disconnected()
     exit(0);
 }
 
-void MyThread::send(QByteArray Data)
+void MyThread::send(QByteArray data)
 {
-    socket->write(Data);
+    socket->write(data);
     socket->flush();
 }

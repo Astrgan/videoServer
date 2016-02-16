@@ -1,9 +1,18 @@
 #include "myserver.h"
-#include <QDebug>
-#include <QDataStream>
+
 
 MyServer::MyServer(QObject *parent) : QTcpServer(parent)
 {
+    QFile file("D:\\videPath.txt");
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream readStream(&file);
+        while (!readStream.atEnd()) {
+            listString.append(readStream.readLine());
+        }
+
+        file.close();
+    }
+//    qDebug()<<listString;
 }
 
 void MyServer::startServer()
@@ -22,7 +31,25 @@ void MyServer::startServer()
 
 void MyServer::processing(QByteArray data)
 {
+    QVector<QChar> qVec;
+    QDataStream streamOUT(data);
+    streamOUT >> qVec;
+    qDebug()<<"qVec.last().digitValue(): "<<qVec.last().digitValue();
+
+//    for(int i=0; i<qVec.size(); i++ ){
+//        qDebug()<< qVec[i].digitValue();
+//    }
+
+    switch(qVec.last().digitValue()) {
+    case 1:
+
+       break;
+    case 2:
+        emit sendAll(data);
+       break;
+    }
     emit sendAll(data);
+
 }
 
 // This function is called by QTcpServer when a new connection is available.
@@ -41,4 +68,5 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
     connect(this, SIGNAL(sendAll(QByteArray)), listClients.last(), SLOT(send(QByteArray)));
 
     listClients.last()->start();
+
 }

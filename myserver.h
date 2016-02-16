@@ -3,6 +3,9 @@
 
 #include <QTcpServer>
 #include <QList>
+#include <QDebug>
+#include <QDataStream>
+#include <QByteArray>
 #include "mythread.h"
 
 class MyServer : public QTcpServer
@@ -12,6 +15,7 @@ public:
     explicit MyServer(QObject *parent = 0);
     void startServer();
     QList<MyThread*> listClients;
+    QList<QString> listString;
 signals:
     void sendAll(QByteArray Data);
 
