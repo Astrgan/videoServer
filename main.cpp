@@ -9,5 +9,5 @@ int main(int argc, char *argv[])
     MyServer server;
     server.startServer();
 
-    return a.exec();
+    return a.exec(); //exit
 }
