@@ -17,3 +17,6 @@ SOURCES += main.cpp \
 HEADERS += \
     mythread.h \
     myserver.h
+
+INCLUDEPATH += D:\Development\VLC-QT\include
+LIBS += -LD:\Development\VLC-QT\bin -llibvlc -llibvlccore -llibVLCQtCore -llibVLCQtCored -llibVLCQtQml -llibVLCQtQmld -llibVLCQtWidgets -llibVLCQtWidgetsd

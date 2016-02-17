@@ -1,6 +1,5 @@
 #include "myserver.h"
 
-
 MyServer::MyServer(QObject *parent) : QTcpServer(parent)
 {
     QFile file("D:\\videPath.txt");
@@ -12,6 +11,7 @@ MyServer::MyServer(QObject *parent) : QTcpServer(parent)
 
         file.close();
     }
+    StartMedia();
 //    qDebug()<<listString;
 }
 
@@ -28,6 +28,7 @@ void MyServer::startServer()
         qDebug() << "Listening to port " << port << "...";
     }
 }
+
 
 void MyServer::processing(QByteArray data)
 {
@@ -69,4 +70,26 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
 
     listClients.last()->start();
 
+}
+
+void MyServer::StartMedia()
+{
+    QStringList args;
+    args << ":sout=#rtp{dst=127.0.0.1,port=1234,sdp=rtsp://127.0.0.1/ch1}";
+
+
+//    QString file = "D:\\RaM.mkv";                     //192.168.1.207
+//    instance = new VlcInstance(args);
+//    media = new VlcMedia(file, true, instance);
+//    media->setOption(":sout=#transcode{vcodec=h264,vb=0,scale=0,acodec=mpga,ab=128,channels=2,samplerate=44100}:rtp{dst=192.168.1.207,port=554,sdp=rtsp://192.168.1.207/ch1}");
+//    player = new VlcMediaPlayer(instance);
+//    player->open(media);
+
+    instance = new VlcInstance(args);
+    player = new VlcMediaPlayer(instance);
+    media = new VlcMedia("D:\\RaM.mkv", true, instance);
+    media->setOption(":sout=#rtp{dst=127.0.0.1,port=1234,sdp=rtsp://127.0.0.1/ch1}");
+
+    player->open(media);
+    player->play();
 }
