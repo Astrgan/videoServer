@@ -11,7 +11,7 @@ MyServer::MyServer(QObject *parent) : QTcpServer(parent)
 
         file.close();
     }
-    StartMedia();
+
 //    qDebug()<<listString;
 }
 
@@ -35,21 +35,28 @@ void MyServer::processing(QByteArray data)
     QVector<QChar> qVec;
     QDataStream streamOUT(data);
     streamOUT >> qVec;
-    qDebug()<<"qVec.last().digitValue(): "<<qVec.last().digitValue();
+    qDebug()<<"qVec.begin().digitValue(): "<<qVec.begin()->digitValue();
 
 //    for(int i=0; i<qVec.size(); i++ ){
 //        qDebug()<< qVec[i].digitValue();
 //    }
 
-    switch(qVec.last().digitValue()) {
+    QByteArray answer;
+    QDataStream streamAnswer(&answer, QIODevice::WriteOnly);
+    streamAnswer << qVec.mid(1,-1) << "\r\n";
+    qDebug()<< qVec;
+
+    switch(qVec.begin()->digitValue()) {
     case 1:
 
        break;
     case 2:
-        emit sendAll(data);
+        qDebug()<<"case2";
+//        listString.append(QString(qVec.mid(1,-1)));
+        emit sendAll(answer);
        break;
     }
-    emit sendAll(data);
+
 
 }
 
@@ -70,26 +77,4 @@ void MyServer::incomingConnection(qintptr socketDescriptor)
 
     listClients.last()->start();
 
-}
-
-void MyServer::StartMedia()
-{
-    QStringList args;
-    args << ":sout=#rtp{dst=127.0.0.1,port=1234,sdp=rtsp://127.0.0.1/ch1}";
-
-
-//    QString file = "D:\\RaM.mkv";                     //192.168.1.207
-//    instance = new VlcInstance(args);
-//    media = new VlcMedia(file, true, instance);
-//    media->setOption(":sout=#transcode{vcodec=h264,vb=0,scale=0,acodec=mpga,ab=128,channels=2,samplerate=44100}:rtp{dst=192.168.1.207,port=554,sdp=rtsp://192.168.1.207/ch1}");
-//    player = new VlcMediaPlayer(instance);
-//    player->open(media);
-
-    instance = new VlcInstance(args);
-    player = new VlcMediaPlayer(instance);
-    media = new VlcMedia("D:\\RaM.mkv", true, instance);
-    media->setOption(":sout=#rtp{dst=127.0.0.1,port=1234,sdp=rtsp://127.0.0.1/ch1}");
-
-    player->open(media);
-    player->play();
 }

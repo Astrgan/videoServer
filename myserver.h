@@ -7,10 +7,6 @@
 #include <QDataStream>
 #include <QByteArray>
 
-#include <VLCQtCore/Instance.h>
-#include <VLCQtCore/Media.h>
-#include <VLCQtCore/MediaPlayer.h>
-
 #include "mythread.h"
 
 class MyServer : public QTcpServer
@@ -23,9 +19,6 @@ public:
     QList<MyThread*> listClients;
     QList<QString> listString;
 
-    VlcInstance *instance;
-    VlcMediaPlayer *player;
-    VlcMedia *media;
 signals:
     void sendAll(QByteArray Data);
 
