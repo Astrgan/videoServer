@@ -28,8 +28,8 @@ void MyThread::run()
 
 void MyThread::readyRead()
 {
-    QByteArray data = socket->readAll();
-    emit answerFromClient(data);
+    QByteArray request = socket->readAll();
+    emit answerFromClient(request);
 
 }
 

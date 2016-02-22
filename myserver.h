@@ -16,14 +16,18 @@ public:
     explicit MyServer(QObject *parent = 0);
     void startServer();
     void StartMedia();
+    void saveString();
     QList<MyThread*> listClients;
-    QList<QString> listString;
+    QList<QString> listVideoPath;
+
+
 
 signals:
     void sendAll(QByteArray Data);
 
 public slots:
     void processing(QByteArray data);
+
 
 protected:
     void incomingConnection(qintptr socketDescriptor);
