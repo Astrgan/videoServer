@@ -66,6 +66,22 @@ void MyServer::processing(QByteArray request){
         streamAnswer << listVideoPath.last() << "\r\n";
         break;
     }
+
+    /*ТЕСТИРОВАНИЕ HTTP ЗАПРОСА*/
+/*
+    QByteArray answer;
+    QDataStream streamAnswer(&answer, QIODevice::WriteOnly);
+    streamAnswer << "HTTP/1.0 200 Ok\r\n"
+          "Content-Type: text/html; charset=\"utf-8\"\r\n"
+          "\r\n"
+          "<h1>Nothing to see here</h1>\n"
+          << QDateTime::currentDateTime().toString() << "\n";
+    qDebug()<<request;
+*/
+
+    /*КОНЕЦ ТЕСТИРОВАНИЕ HTTP ЗАПРОСА*/
+
+
     emit sendAll(answer);
 }
 

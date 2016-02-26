@@ -6,6 +6,8 @@
 #include <QDebug>
 #include <QDataStream>
 #include <QByteArray>
+#include <QTextStream>
+#include <QDateTime>
 
 #include "mythread.h"
 
